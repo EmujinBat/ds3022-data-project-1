@@ -2,6 +2,8 @@
 -- Adds: trip_co2_kgs, avg_mph, hour_of_day, day_of_week, week_of_year, month_of_year
 -- Uses a real-time lookup from the vehicle_emissions table (vehicle_type = 'yellow_taxi')
 
+{{ config(materialized='table', alias='yellow_trips') }}
+
 SELECT
 	yt.*,
 	-- total CO2 in kilograms: (miles * grams_per_mile) / 1000
