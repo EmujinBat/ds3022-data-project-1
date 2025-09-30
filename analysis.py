@@ -25,7 +25,7 @@ def analyze_data():
         # === 1. LARGEST TRIP ===
         logger.info("1. LARGEST CO2 TRIP")
         for taxi in ["yellow", "green"]:
-            table = f"{taxi}_trips_transformed"
+            table = f"{taxi}_trips"
             query = f"""
                 SELECT *
                 FROM {table}
@@ -40,7 +40,7 @@ def analyze_data():
         # === 2. HOURLY PATTERNS ===
         logger.info("2. HOURLY CO2 PATTERNS")
         for taxi in ["yellow", "green"]:
-            table = f"{taxi}_trips_transformed"
+            table = f"{taxi}_trips"
             query = f"""
                 SELECT hour_of_day, AVG(trip_co2_kgs) AS avg_co2
                 FROM {table}
@@ -55,7 +55,7 @@ def analyze_data():
         logger.info("3. WEEKDAY CO2 PATTERNS")
         days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
         for taxi in ["yellow", "green"]:
-            table = f"{taxi}_trips_transformed"
+            table = f"{taxi}_trips"
             query = f"""
                 SELECT day_of_week, AVG(trip_co2_kgs) AS avg_co2
                 FROM {table}
@@ -72,7 +72,7 @@ def analyze_data():
         logger.info("4. WEEK & MONTH CO2 PATTERNS")
         for period, col in [("week", "week_of_year"), ("month", "month_of_year")]:
             for taxi in ["yellow", "green"]:
-                table = f"{taxi}_trips_transformed"
+                table = f"{taxi}_trips"
                 query = f"""
                     SELECT {col}, AVG(trip_co2_kgs) AS avg_co2
                     FROM {table}
@@ -87,14 +87,14 @@ def analyze_data():
         logger.info("5. MONTHLY TOTALS PLOT")
         yellow_monthly = con.execute("""
             SELECT month_of_year, SUM(trip_co2_kgs) AS total_co2
-            FROM yellow_trips_transformed
+            FROM yellow_trips
             GROUP BY month_of_year
             ORDER BY month_of_year
         """).fetchdf()
 
         green_monthly = con.execute("""
             SELECT month_of_year, SUM(trip_co2_kgs) AS total_co2
-            FROM green_trips_transformed
+            FROM green_trips
             GROUP BY month_of_year
             ORDER BY month_of_year
         """).fetchdf()
